@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>final tracker</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-tasks"></i> Enhanced Task Tracker</h1>
+            <div class="controls">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i> Dark Mode
+                </button>
+                <button class="shortcut-info" id="shortcutInfo" aria-label="Show keyboard shortcuts">
+                    <i class="fas fa-keyboard"></i> Shortcuts
+                </button>
+            </div>
+            <br><div class="date-display" id="currentDate" role="button" aria-label="Select date"></div>
+        </div>
+
+        <div class="calendar-container" id="calendarContainer">
+            <div class="calendar-header">
+                <span class="calendar-nav" id="prevMonth"><i class="fas fa-chevron-left"></i></span>
+                <h3 id="calendarMonthYear"></h3>
+                <span class="calendar-nav" id="nextMonth"><i class="fas fa-chevron-right"></i></span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-card">
+                <h3>Daily Tasks</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="dailyProgress"></div>
+                </div>
+                <span id="dailyStats">0/0 completed</span>
+            </div>
+            <div class="progress-card">
+                <h3>Weekly Tasks</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="weeklyProgress"></div>
+                </div>
+                <span id="weeklyStats">0/10 completed</span>
+            </div>
+            <div class="progress-card">
+                <h3>Overall Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="overallProgress"></div>
+                </div>
+                <span id="overallStats">0/0 completed</span>
+            </div>
+        </div>
+
+        <div class="task-sections">
+            <!-- Other Clients Section -->
+            <div class="task-section other">
+                <div class="section-header">
+                    <span style="font-size: 1.5rem;">➕</span>
+                    <h2>Other Clients</h2>
+                    <span class="badge">DAILY</span>
+                    <button class="add-task-btn" onclick="toggleAddForm('other')" aria-label="Add task">+ Add Task</button>
+                </div>
+
+                <div class="add-task-form" id="add-form-other">
+                    <div class="form-row">
+                        <input type="text" placeholder="Client Name (required)" id="client-other" class="task-title-input" aria-label="Client name">
+                        <input type="text" placeholder="Task title (required)" id="title-other" class="task-title-input" aria-label="Task title">
+                        <input type="text" placeholder="Tags (comma separated)" id="tags-other" class="task-tags-input" aria-label="Tags">
+                        <input type="date" id="dueDate-other" class="task-title-input" aria-label="Due date">
+                        <input type="text" placeholder="Link (optional)" id="link-other" class="task-link-input" aria-label="Link">
+                        <button class="save-task-btn" onclick="addOtherTask()">Add</button>
+                    </div>
+                </div>
+
+                <div id="tasks-other"></div>
+            </div>            
+
+            <div class="task-section daily">
+                <div class="section-header">
+                    <span style="font-size: 1.5rem;">👨‍💼</span>
+                    <h2>Gary</h2>
+                    <span class="badge">DAILY</span>
+                    <button class="add-task-btn" onclick="toggleAddForm('gary')" aria-label="Add task">+ Add Task</button>
+                </div>
+
+                <div class="add-task-form" id="add-form-gary">
+                    <div class="form-row">
+                        <input type="text" placeholder="Task title (required)" id="title-gary" class="task-title-input" aria-label="Task title">
+                        <input type="text" placeholder="Tags (comma separated)" id="tags-gary" class="task-tags-input" aria-label="Tags">
+                        <select id="priority-gary" class="task-priority" aria-label="Priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <input type="date" id="dueDate-gary" class="task-title-input" aria-label="Due date">
+                        <input type="text" placeholder="Link (optional)" id="link-gary" class="task-link-input" aria-label="Link">
+                        <button class="save-task-btn" onclick="addTask('gary')">Add</button>
+                    </div>
+                </div>
+
+                <div id="tasks-gary"></div>
+            </div>
+
+            <div class="task-section daily">
+                <div class="section-header">
+                    <span style="font-size: 1.5rem;">📺</span>
+                    <h2>Falesha</h2>
+                    <span class="badge">DAILY</span>
+                    <button class="add-task-btn" onclick="toggleAddForm('falesha')" aria-label="Add task">+ Add Task</button>
+                </div>
+
+                <div class="add-task-form" id="add-form-falesha">
+                    <div class="form-row">
+                        <input type="text" placeholder="Task title (required)" id="title-falesha" class="task-title-input" aria-label="Task title">
+                        <input type="text" placeholder="Tags (comma separated)" id="tags-falesha" class="task-tags-input" aria-label="Tags">
+                        <select id="priority-falesha" class="task-priority" aria-label="Priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <input type="date" id="dueDate-falesha" class="task-title-input" aria-label="Due date">
+                        <input type="text" placeholder="Link (optional)" id="link-falesha" class="task-link-input" aria-label="Link">
+                        <button class="save-task-btn" onclick="addTask('falesha')">Add</button>
+                    </div>
+                </div>
+
+                <div id="tasks-falesha"></div>
+            </div>
+
+            <div class="task-section daily">
+                <div class="section-header">
+                    <span style="font-size: 1.5rem;">🎨</span>
+                    <h2>Lawrence</h2>
+                    <span class="badge">DAILY</span>
+                    <button class="add-task-btn" onclick="toggleAddForm('lawrence')" aria-label="Add task">+ Add Task</button>
+                </div>
+
+                <div class="add-task-form" id="add-form-lawrence">
+                    <div class="form-row">
+                        <input type="text" placeholder="Task title (required)" id="title-lawrence" class="task-title-input" aria-label="Task title">
+                        <input type="text" placeholder="Tags (comma separated)" id="tags-lawrence" class="task-tags-input" aria-label="Tags">
+                        <select id="priority-lawrence" class="task-priority" aria-label="Priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <input type="date" id="dueDate-lawrence" class="task-title-input" aria-label="Due date">
+                        <input type="text" placeholder="Link (optional)" id="link-lawrence" class="task-link-input" aria-label="Link">
+                        <button class="save-task-btn" onclick="addTask('lawrence')">Add</button>
+                    </div>
+                </div>
+
+                <div id="tasks-lawrence"></div>
+            </div>
+
+            <!-- Weekly Tasks Section -->
+            <div class="task-section weekly">
+                <div class="section-header">
+                    <span style="font-size: 1.5rem;">📊</span>
+                    <h2>Vconnx Virtual Solutions</h2>
+                    <span class="badge weekly">WEEKLY</span>
+                    <button class="add-task-btn" onclick="toggleAddForm('vconnx')" aria-label="Add task">+ Add Task</button>
+                </div>
+
+                <div class="add-task-form" id="add-form-vconnx">
+                    <div class="form-row">
+                        <input type="text" placeholder="Task title (required)" id="title-vconnx" class="task-title-input" aria-label="Task title">
+                        <input type="text" placeholder="Tags (comma separated)" id="tags-vconnx" class="task-tags-input" aria-label="Tags">
+                        <select id="priority-vconnx" class="task-priority" aria-label="Priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <input type="date" id="dueDate-vconnx" class="task-title-input" aria-label="Due date">
+                        <input type="text" placeholder="Google Drive link (required)" id="link-vconnx" class="task-link-input" aria-label="Link">
+                        <button class="save-task-btn" onclick="addTask('vconnx')">Add</button>
+                    </div>
+                </div>
+
+                <div id="tasks-vconnx">
+                    <!-- Default Vconnx tasks will be rendered here -->
+                </div>
+
+                <div class="weekly-progress">
+                    <strong>Weekly Quota:</strong> 5 days per week | 4 reels + 6 stories per day
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn reset-btn" onclick="resetTasks()" aria-label="Reset all tasks">
+                <i class="fas fa-sync-alt"></i> Reset All Tasks
+            </button>
+            <button class="action-btn eod-btn" onclick="generateEOD()" aria-label="Generate EOD report">
+                <i class="fas fa-file-alt"></i> Generate EOD Report
+            </button>
+        </div>
+    </div>
+
+    <!-- EOD Modal -->
+    <div id="eodModal" class="eod-modal">
+        <div class="eod-content">
+            <div class="eod-header">
+                <h2><i class="fas fa-file-alt"></i> Clark's EOD Report</h2>
+                <span class="close-modal" onclick="closeEODModal()" aria-label="Close">&times;</span>
+            </div>
+            <div class="eod-text" id="eodText"></div>
+            <button class="copy-btn" onclick="copyEOD()" aria-label="Copy to clipboard">
+                <i class="fas fa-copy"></i> Copy to Clipboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Shortcuts Modal -->
+    <div id="shortcutsModal" class="shortcuts-modal">
+        <div class="shortcuts-content">
+            <div class="eod-header">
+                <h2><i class="fas fa-keyboard"></i> Keyboard Shortcuts</h2>
+                <span class="close-modal" onclick="closeShortcutsModal()" aria-label="Close">&times;</span>
+            </div>
+            <div class="shortcuts-list">
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Ctrl + Alt + T</span>
+                    <span>Toggle Dark Mode</span>
+                </div>
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Ctrl + Alt + S</span>
+                    <span>Show Keyboard Shortcuts</span>
+                </div>
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Ctrl + Alt + R</span>
+                    <span>Reset All Tasks</span>
+                </div>
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Ctrl + Alt + E</span>
+                    <span>Generate EOD Report</span>
+                </div>
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Esc</span>
+                    <span>Close Modal Windows</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
