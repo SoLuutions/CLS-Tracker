@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>final tracker</title>
+  <title>Shift-Based Task Tracker</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -19,7 +19,16 @@
                     <i class="fas fa-keyboard"></i> Shortcuts
                 </button>
             </div>
-            <br><div class="date-display" id="currentDate" role="button" aria-label="Select date"></div>
+            <div class="date-display-container">
+                <div class="date-display" id="currentDate" role="button" aria-label="Select date"></div>
+                <div class="shift-controls">
+                    <label class="switch">
+                        <input type="checkbox" id="showPreviousShiftToggle" onchange="togglePreviousShiftTasks()">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="shift-toggle-label">Show Previous Shift Tasks</span>
+                </div>
+            </div>
         </div>
 
         <div class="calendar-container" id="calendarContainer">
@@ -195,6 +204,9 @@
             <button class="action-btn reset-btn" onclick="resetTasks()" aria-label="Reset all tasks">
                 <i class="fas fa-sync-alt"></i> Reset All Tasks
             </button>
+            <button class="action-btn shift-btn" onclick="startNewShift()" aria-label="Start new shift">
+                <i class="fas fa-clock"></i> Start New Shift
+            </button>
             <button class="action-btn eod-btn" onclick="generateEOD()" aria-label="Generate EOD report">
                 <i class="fas fa-file-alt"></i> Generate EOD Report
             </button>
@@ -238,6 +250,10 @@
                 <div class="shortcut-item">
                     <span><i class="fas fa-key"></i> Ctrl + Alt + E</span>
                     <span>Generate EOD Report</span>
+                </div>
+                <div class="shortcut-item">
+                    <span><i class="fas fa-key"></i> Ctrl + Alt + N</span>
+                    <span>Start New Shift</span>
                 </div>
                 <div class="shortcut-item">
                     <span><i class="fas fa-key"></i> Esc</span>
