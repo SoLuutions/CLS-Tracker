@@ -11,8 +11,14 @@ let tasks = {
 let currentCalendarDate = new Date();
 let selectedDate = new Date();
 
-// Shift state
-let showPreviousShiftTasks = false;
+// Helper function to get normalized shift date
+function getShiftDate(date) {
+    const d = new Date(date);
+    const hour = d.getHours();
+    if (hour < 4) d.setDate(d.getDate() - 1);
+    d.setHours(0, 0, 0, 0);
+    return d;
+}
 
 // Initialize date display with shift information
 function updateDate() {
@@ -48,6 +54,15 @@ function loadTasks() {
     if (savedTasks) {
         try {
             tasks = JSON.parse(savedTasks);
+            // Convert date strings to Date objects
+            for (const client in tasks) {
+                tasks[client] = tasks[client].map(task => {
+                    if (task.createdAt) task.createdAt = new Date(task.createdAt);
+                    if (task.completedAt) task.completedAt = new Date(task.completedAt);
+                    if (task.dueDate) task.dueDate = new Date(task.dueDate);
+                    return task;
+                });
+            }
         } catch (e) {
             console.error('Error loading tasks from localStorage:', e);
             alert('Failed to load tasks. Resetting to default.');
@@ -134,7 +149,7 @@ function renderCalendar(date) {
         dayElement.addEventListener('click', () => {
             selectedDate = new Date(date.getFullYear(), date.getMonth(), i);
             updateDate();
-            renderAllTasks();
+            renderAllTasks();  // Refresh tasks for new date
             toggleCalendar();
         });
         
@@ -276,31 +291,6 @@ function renderTask(client, task) {
             ${task.link ? `<a href="${task.link}" target="_blank" class="task-link">${client === 'vconnx' ? '📁 View File' : '🔗 View Link'}</a>` : ''}
         </div>
     `;
-    
-    // Add shift class if it's from previous shift
-    const now = selectedDate;
-    const hour = now.getHours();
-    const shiftStart = new Date(now);
-    
-    // Set shift start time (8pm for night shift, 8am for day shift)
-    if (hour >= 20 || hour < 4) {
-        // Night shift - starts at 8pm
-        shiftStart.setHours(20, 0, 0, 0);
-        if (hour < 4) {
-            // If it's after midnight, shift started yesterday at 8pm
-            shiftStart.setDate(shiftStart.getDate() - 1);
-        }
-    } else {
-        // Day shift - starts at 8am
-        shiftStart.setHours(8, 0, 0, 0);
-    }
-    
-    if (new Date(task.createdAt) < shiftStart) {
-        taskItem.classList.add('previous-shift');
-        if (!showPreviousShiftTasks) {
-            taskItem.style.display = 'none';
-        }
-    }
     
     // Add event listeners
     taskItem.querySelector('.task-header').addEventListener('click', function(e) {
@@ -598,31 +588,6 @@ function renderOtherTask(task) {
         </div>
     `;
     
-    // Add shift class if it's from previous shift
-    const now = selectedDate;
-    const hour = now.getHours();
-    const shiftStart = new Date(now);
-    
-    // Set shift start time (8pm for night shift, 8am for day shift)
-    if (hour >= 20 || hour < 4) {
-        // Night shift - starts at 8pm
-        shiftStart.setHours(20, 0, 0, 0);
-        if (hour < 4) {
-            // If it's after midnight, shift started yesterday at 8pm
-            shiftStart.setDate(shiftStart.getDate() - 1);
-        }
-    } else {
-        // Day shift - starts at 8am
-        shiftStart.setHours(8, 0, 0, 0);
-    }
-    
-    if (new Date(task.createdAt) < shiftStart) {
-        taskItem.classList.add('previous-shift');
-        if (!showPreviousShiftTasks) {
-            taskItem.style.display = 'none';
-        }
-    }
-    
     // Add event listeners
     taskItem.querySelector('.task-header').addEventListener('click', function(e) {
         if (!e.target.classList.contains('delete-task-btn') && 
@@ -794,19 +759,6 @@ function initializeVconnxTasks() {
     
     // Render Vconnx tasks
     vconnxTasks.forEach(task => renderTask('vconnx', task));
-}
-
-// Helper function to get shift date for a given date
-function getShiftDate(date) {
-    const d = new Date(date);
-    const hour = d.getHours();
-    // If between 00:00 and 03:59, then subtract one day because it belongs to the previous day's night shift.
-    if (hour < 4) {
-        d.setDate(d.getDate() - 1);
-    }
-    // Set to midnight of the shift date
-    d.setHours(0, 0, 0, 0);
-    return d;
 }
 
 // Generate EOD Report - with status differentiation
